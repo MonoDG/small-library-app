@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  padding: 20px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.book-display {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: steelblue;
+}
+
+.card {
+  background-color: beige;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px;
+}
