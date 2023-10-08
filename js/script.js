@@ -19,6 +19,9 @@ function Book(title, author, pages, read) {
         msg_output += this.read ? 'read' : 'not read yet'
         return msg_output
     }
+    this.toggleRead = function () {
+        this.read = !this.read;
+    }
 }
 
 function addBookToLibrary(book) {
@@ -31,8 +34,8 @@ function printBooks() {
         bookDisplay.removeChild(bookDisplay.lastChild);
     }
 
-    for (let book of myLibrary) {
-        let bookCard = createHTMLCard(book);
+    for (let i = 0; i < myLibrary.length; i++) {
+        let bookCard = createHTMLCard(myLibrary[i], i);
         bookDisplay.appendChild(bookCard);
     }
 
@@ -40,16 +43,18 @@ function printBooks() {
     bookDisplay.appendChild(newBookPlaceholder);
 }
 
-function createHTMLCard(book) {
+function createHTMLCard(book, index) {
     let bookCard = document.createElement("div");
     let bookCardHeader = document.createElement("div");
     let bookCardBody = document.createElement("div");
+    let bookCardFooter = document.createElement("div");
     let bookCardTitle = document.createElement("p");
     let bookCardContent = document.createElement("ul");
 
     bookCard.classList.add("card");
     bookCardHeader.classList.add("card-header");
-    bookCardBody.classList.add("bookCardBody");
+    bookCardBody.classList.add("card-body");
+    bookCardFooter.classList.add("card-footer");
 
     bookCardTitle.textContent = book.title;
 
@@ -61,10 +66,36 @@ function createHTMLCard(book) {
         }
     }
 
+    let btnRemoveBook = document.createElement("button");
+    let btnToogleRead = document.createElement("button");
+
+    btnRemoveBook.textContent = "Remove";
+    btnRemoveBook.setAttribute("data-index-array", index);
+    btnRemoveBook.addEventListener("click", (e) => {
+        myLibrary.splice(e.target.getAttribute("data-index-array"), 1);
+        printBooks();
+    })
+
+    btnToogleRead.setAttribute("data-index-array", index);
+
+    if (book.read) {
+        btnToogleRead.textContent = "Mark unread";
+    } else {
+        btnToogleRead.textContent = "Mark read";
+    }
+
+    btnToogleRead.addEventListener("click", (e) => {
+        myLibrary[e.target.getAttribute("data-index-array")].toggleRead();
+        printBooks();
+    })
+
     bookCardHeader.appendChild(bookCardTitle);
     bookCardBody.appendChild(bookCardContent);
+    bookCardFooter.appendChild(btnRemoveBook);
+    bookCardFooter.appendChild(btnToogleRead);
     bookCard.appendChild(bookCardHeader);
     bookCard.appendChild(bookCardBody);
+    bookCard.appendChild(bookCardFooter);
     return bookCard;
 }
 
@@ -75,10 +106,13 @@ function resetAddBookForm() {
     bookRead.checked = false;
 }
 
+function removeBook(book) {
+    myLibrary.splice
+}
+
 const newBookPlaceholder = document.createElement("div");
 newBookPlaceholder.classList.add("card");
 newBookPlaceholder.classList.add("card-placeholder");
-
 const addNewBookButton = document.createElement("button");
 addNewBookButton.id = "showAddBookDialog";
 addNewBookButton.textContent = "New Book +";
@@ -95,7 +129,6 @@ confirmBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const newBook = new Book(bookTitle.value, bookAuthor.value, bookPages.value, bookRead.checked);
     addBookToLibrary(newBook);
-    createHTMLCard(newBook);
     printBooks();
     addNewBookDialog.close();
 })

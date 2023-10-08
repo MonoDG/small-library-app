@@ -53,8 +53,15 @@ button {
   border-radius: 5px;
 }
 
-.card-body {
+.card-body,
+.card-footer {
   padding: 5px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
 }
 
 .card-placeholder {
