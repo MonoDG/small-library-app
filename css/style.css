@@ -10,13 +10,21 @@ body {
   width: 80%;
   margin: 0 auto;
   font-family: Roboto, Arial, Helvetica, sans-serif;
-  text-align: center;
+}
+
+button {
+  background-color: antiquewhite;
+  border-radius: 10px;
+  padding: 5px;
+  cursor: pointer;
+  border: none;
 }
 
 .book-display {
   display: flex;
   flex-wrap: wrap;
-  background-color: steelblue;
+  background-color: darkgray;
+  justify-content: center;
   margin: 10px 0;
   border-radius: 10px;
 }
@@ -26,4 +34,33 @@ body {
   border-radius: 15px;
   padding: 20px;
   margin: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 3px 3px 3px 0 black;
+}
+
+.card ul {
+  list-style-type: none;
+}
+
+.card-header {
+  font-weight: 800;
+  font-size: 1.2rem;
+  padding: 5px;
+  margin-bottom: 10px;
+  background-color: cadetblue;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.card-body {
+  padding: 5px;
+}
+
+.card-placeholder {
+  background-color: inherit;
+  border: 1px dashed black;
+  box-shadow: none;
+  align-items: center;
+  justify-content: center;
 }

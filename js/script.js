@@ -1,5 +1,13 @@
 const myLibrary = [];
 const bookDisplay = document.querySelector(".book-display");
+const addNewBookDialog = document.querySelector("#newBookDialog");
+const confirmBtn = document.querySelector("#confirmBtn");
+
+// Dialog form inputs
+const bookTitle = document.querySelector("#bookTitle");
+const bookAuthor = document.querySelector("#bookAuthor");
+const bookPages = document.querySelector("#bookPages");
+const bookRead = document.querySelector("#bookRead");
 
 function Book(title, author, pages, read) {
     this.title = title
@@ -17,17 +25,80 @@ function addBookToLibrary(book) {
     myLibrary.push(book);
 }
 
-addBookToLibrary(new Book("Book 1", "Author 1", 14, false));
-addBookToLibrary(new Book("Book 2", "Author 2", 24, false));
-addBookToLibrary(new Book("Book 3", "Author 3", 100, true));
-
 function printBooks() {
-    for (let book of myLibrary) {
-        let bookNode = document.createElement("div");
-        bookNode.classList.add("card");
-        bookNode.textContent = book.info();
-        bookDisplay.appendChild(bookNode);
+    // Remove books
+    while (bookDisplay.hasChildNodes()) {
+        bookDisplay.removeChild(bookDisplay.lastChild);
     }
+
+    for (let book of myLibrary) {
+        let bookCard = createHTMLCard(book);
+        bookDisplay.appendChild(bookCard);
+    }
+
+    // Create Card placeholder for adding a new book
+    bookDisplay.appendChild(newBookPlaceholder);
 }
 
-printBooks();
+function createHTMLCard(book) {
+    let bookCard = document.createElement("div");
+    let bookCardHeader = document.createElement("div");
+    let bookCardBody = document.createElement("div");
+    let bookCardTitle = document.createElement("p");
+    let bookCardContent = document.createElement("ul");
+
+    bookCard.classList.add("card");
+    bookCardHeader.classList.add("card-header");
+    bookCardBody.classList.add("bookCardBody");
+
+    bookCardTitle.textContent = book.title;
+
+    for (const [key, value] of Object.entries(book)) {
+        if (typeof value !== "function") {
+            let bookItem = document.createElement("li");
+            bookItem.textContent = `${key}: ${value}`;
+            bookCardContent.appendChild(bookItem);
+        }
+    }
+
+    bookCardHeader.appendChild(bookCardTitle);
+    bookCardBody.appendChild(bookCardContent);
+    bookCard.appendChild(bookCardHeader);
+    bookCard.appendChild(bookCardBody);
+    return bookCard;
+}
+
+function resetAddBookForm() {
+    bookTitle.textContent = null;
+    bookAuthor.textContent = null;
+    bookPages.textContent = null;
+    bookRead.checked = false;
+}
+
+const newBookPlaceholder = document.createElement("div");
+newBookPlaceholder.classList.add("card");
+newBookPlaceholder.classList.add("card-placeholder");
+
+const addNewBookButton = document.createElement("button");
+addNewBookButton.id = "showAddBookDialog";
+addNewBookButton.textContent = "New Book +";
+addNewBookButton.addEventListener("click", () => {
+    addNewBookDialog.showModal();
+});
+newBookPlaceholder.appendChild(addNewBookButton);
+
+addNewBookDialog.addEventListener("close", () => {
+    resetAddBookForm();
+})
+
+confirmBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const newBook = new Book(bookTitle.value, bookAuthor.value, bookPages.value, bookRead.checked);
+    addBookToLibrary(newBook);
+    createHTMLCard(newBook);
+    printBooks();
+    addNewBookDialog.close();
+})
+
+// Create Card placeholder for adding a new book
+bookDisplay.appendChild(newBookPlaceholder);
