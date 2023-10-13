@@ -9,20 +9,57 @@ const bookAuthor = document.querySelector("#bookAuthor");
 const bookPages = document.querySelector("#bookPages");
 const bookRead = document.querySelector("#bookRead");
 
-function Book(title, author, pages, read) {
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.read = read
-    this.info = function () {
-        let msg_output = `${this.title} by ${this.author}, ${this.pages} pages, `
-        msg_output += this.read ? 'read' : 'not read yet'
-        return msg_output
+class Book {
+    #_title;
+    #_author;
+    #_pages;
+    #_read;
+
+    constructor(title, author, pages, read) {
+        this.#_title = title;
+        this.#_author = author;
+        this.#_pages = pages;
+        this.#_read = read;
+        this.info = () => {
+            let msg_output = `${this.#_title} by ${this.#_author}, ${this.#_pages} pages, `;
+            msg_output += this.#_read ? 'read' : 'not read yet';
+            return msg_output;
+        };
+        this.toggleRead = () => this.#_read = !this.#_read;
     }
-    this.toggleRead = function () {
-        this.read = !this.read;
-    }
+
+    get title() { return this.#_title; }
+
+    set title(value) { this.#_title = value; }
+
+    get author() { return this.#_author; }
+
+    set author(value) { this.#_author = value; }
+
+    get pages() { return this.#_pages; }
+
+    set pages(value) { this.#_pages = value; }
+
+    get read() { return this.#_read; }
+
+    set read(value) { this.#_read = value; }
 }
+
+
+// function Book(title, author, pages, read) {
+//     this.title = title
+//     this.author = author
+//     this.pages = pages
+//     this.read = read
+//     this.info = function () {
+//         let msg_output = `${this.title} by ${this.author}, ${this.pages} pages, `
+//         msg_output += this.read ? 'read' : 'not read yet'
+//         return msg_output
+//     }
+//     this.toggleRead = function () {
+//         this.read = !this.read;
+//     }
+// }
 
 function addBookToLibrary(book) {
     myLibrary.push(book);
@@ -58,13 +95,25 @@ function createHTMLCard(book, index) {
 
     bookCardTitle.textContent = book.title;
 
-    for (const [key, value] of Object.entries(book)) {
-        if (typeof value !== "function") {
-            let bookItem = document.createElement("li");
-            bookItem.textContent = `${key}: ${value}`;
-            bookCardContent.appendChild(bookItem);
-        }
-    }
+    // for (const [key, value] of Object.entries(book)) {
+    //     if (typeof value !== "function") {
+    //         let bookItem = document.createElement("li");
+    //         bookItem.textContent = `${key}: ${value}`;
+    //         bookCardContent.appendChild(bookItem);
+    //     }
+    // }
+
+    let bookAuthorListItem = document.createElement("li");
+    bookAuthorListItem.textContent = `Author: ${book.author}`;
+    bookCardContent.appendChild(bookAuthorListItem);
+
+    let bookPagesListItem = document.createElement("li");
+    bookPagesListItem.textContent = `Pages: ${book.pages}`;
+    bookCardContent.appendChild(bookPagesListItem);
+
+    let bookReadListItem = document.createElement("li");
+    bookReadListItem.textContent = `Read: ${book.read}`;
+    bookCardContent.appendChild(bookReadListItem);
 
     let btnRemoveBook = document.createElement("button");
     let btnToogleRead = document.createElement("button");
