@@ -15,29 +15,27 @@
   <main>
     <section class="book-display"></section>
     <dialog id="newBookDialog">
-      <form>
-        <fieldset>
-          <div>
-            <label for="bookTitle">Title:</label>
+      <form id="formNewBook" method="dialog">
+        <div>
+          <label for="bookTitle">
+            <span>Title:</span>
             <input type="text" name="bookTitle" id="bookTitle" required>
-          </div>
-          <div>
-            <label for="bookAuthor">Author:</label>
+          </label>
+          <label for="bookAuthor">
+            <span>Author:</span>
             <input type="text" name="bookAuthor" id="bookAuthor" required>
-          </div>
-          <div>
-            <label for="bookPages">Total pages:</label>
-            <input type="number" name="bookPages" id="bookPages" min="0" max="9999" required>
-          </div>
-          <div>
-            <label for="bookRead">Read:</label>
+          </label>
+          <label for="bookPages">
+            <span>Total pages:</span>
+            <input type="number" name="bookPages" id="bookPages" min="1" max="9999" required>
+          </label>
+          <label for="bookRead">
+            <span>Read:</span>
             <input type="checkbox" name="bookRead" id="bookRead">
-          </div>
-        </fieldset>
-        <fieldset>
-          <button value="cancel" formmethod="dialog">Cancel</button>
-          <button id="confirmBtn" value="default">Confirm</button>
-        </fieldset>
+          </label>
+        </div>
+        <button id="cancelBtn" value="cancel">Cancel</button>
+        <button id="confirmBtn" value="default">Confirm</button>
       </form>
     </dialog>
   </main>
