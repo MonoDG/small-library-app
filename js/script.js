@@ -173,47 +173,62 @@ cancelBtn.addEventListener("click", (e) => {
 });
 
 bookTitle.addEventListener("input", (e) => {
+  showErrors();
+});
+
+bookAuthor.addEventListener("input", (e) => {
+  showErrors();
+});
+
+bookPages.addEventListener("input", (e) => {
+  showErrors();
+});
+
+formNewBook.addEventListener("submit", (e) => {
+  showErrors();
+
+  if (formNewBook.checkValidity()) {
+    const newBook = new Book(
+      bookTitle.value,
+      bookAuthor.value,
+      bookPages.value,
+      bookRead.checked
+    );
+    addBookToLibrary(newBook);
+    printBooks();
+    addNewBookDialog.close();
+  } else {
+    e.preventDefault();
+    formNewBook.reportValidity();
+  }
+});
+
+function showErrors() {
   if (bookTitle.validity.valueMissing) {
     bookTitle.setCustomValidity("Title is required.");
   } else {
     bookTitle.setCustomValidity("");
   }
-});
 
-bookAuthor.addEventListener("input", (e) => {
   if (bookAuthor.validity.valueMissing) {
     bookAuthor.setCustomValidity("Author is required.");
   } else {
     bookAuthor.setCustomValidity("");
   }
-});
-
-bookPages.addEventListener("input", (e) => {
   if (bookPages.validity.valueMissing) {
     bookPages.setCustomValidity("Total pages is required.");
-  } else if (
-    bookPages.validity.rangeOverflow ||
-    bookPages.validity.rangeUnderflow
-  ) {
+  } else if (bookPages.validity.rangeUnderflow) {
     bookPages.setCustomValidity(
-      `Total pages should be between ${bookPages.min} and ${bookPages.max}; you entered ${bookPages.value}.`
+      `Total pages should be at least ${bookPages.min}; you entered ${bookPages.value}.`
+    );
+  } else if (bookPages.validity.rangeOverflow) {
+    bookPages.setCustomValidity(
+      `Total pages should be at most ${bookPages.max}; you entered ${bookPages.value}.`
     );
   } else {
     bookPages.setCustomValidity("");
   }
-});
-
-formNewBook.addEventListener("submit", () => {
-  const newBook = new Book(
-    bookTitle.value,
-    bookAuthor.value,
-    bookPages.value,
-    bookRead.checked
-  );
-  addBookToLibrary(newBook);
-  printBooks();
-  addNewBookDialog.close();
-});
+}
 
 // Create Card placeholder for adding a new book
 bookDisplay.appendChild(newBookPlaceholder);
